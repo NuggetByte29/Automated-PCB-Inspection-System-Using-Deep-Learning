@@ -1,0 +1,4 @@
+bent_pin
+broken_comp
+missing_comp
+missing_tb

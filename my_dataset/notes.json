@@ -1,0 +1,25 @@
+{
+  "categories": [
+    {
+      "id": 0,
+      "name": "bent_pin"
+    },
+    {
+      "id": 1,
+      "name": "broken_comp"
+    },
+    {
+      "id": 2,
+      "name": "missing_comp"
+    },
+    {
+      "id": 3,
+      "name": "missing_tb"
+    }
+  ],
+  "info": {
+    "year": 2025,
+    "version": "1.0",
+    "contributor": "Label Studio"
+  }
+}

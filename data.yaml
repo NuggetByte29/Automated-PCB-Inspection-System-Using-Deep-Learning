@@ -1,0 +1,7 @@
+path: D:/fyp_project/data  # Point to your NEW project data folder
+train: train/images        # relative to 'path'
+val: validation/images     # relative to 'path'
+
+# CLASSES
+nc: 4                      # How many defect types?
+names: ["bent_pin", "broken_comp", "missing_comp", "missing_tb"]
