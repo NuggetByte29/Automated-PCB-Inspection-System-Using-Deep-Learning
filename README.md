@@ -12,12 +12,23 @@ The system uses a USB webcam mounted above a DC motor conveyor belt. When a PCB 
 
 ---
 
-## 🖥️ HMI
+## HMI
 ![HMI Screenshot](HMI_output.png)
 
 ---
 
+##  Features
 
+- **Dual video panel** — Live feed + frozen defect snapshot side by side
+- **Real-time AI detection** — YOLOv11s detects 4 defect classes instantly on PCB arrival
+- **Auto PASS/REJECT classification** — Banner updates automatically per inspection
+- **Defect statistics chart** — Embedded bar chart showing defect count per class
+- **Defect inspection log** — Timestamped, color-coded table of every detected defect
+- **Report generation** — Export inspection results as PDF or CSV
+- **Auto Mode** — Automatically freezes and updates frame per inspection cycle
+- **Conveyor control panel** — Connect/disconnect serial port, adjust scan cooldown (1–10s)
+- **Arduino integration** — Real-time serial communication with conveyor belt hardware
+- **Refresh** — Reset all stats and start a new inspection session
 ## AI Model
 
 | Property | Details |
