@@ -21,7 +21,7 @@ matplotlib.use("TkAgg")
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-# Serial (optional — graceful if not installed)
+# Serial
 try:
     import serial
     import serial.tools.list_ports
@@ -31,7 +31,7 @@ except ImportError:
     print("[WARN] pyserial not installed — ESP32 control disabled")
     print("       Run: pip install pyserial")
 
-# PDF (optional — graceful if not installed)
+# PDF
 try:
     from reportlab.lib.pagesizes import A4
     from reportlab.lib import colors
@@ -48,11 +48,11 @@ except ImportError:
     print("[WARN] reportlab not installed — PDF export disabled")
     print("       Run: pip install reportlab")
 
-# ── Appearance ────────────────────────────────────────────────────────────────
+# Appearance 
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 
-# ── Config ────────────────────────────────────────────────────────────────────
+# Config
 MODEL_PATH   = "runs/detect/train_v3/weights/best.pt"
 CAMERA_ID    = 0
 CONF_THRESH  = 0.35
@@ -89,7 +89,7 @@ CHART_COLORS = {
 CHART_BG   = "#0f0f18"
 CHART_AXES = "#13131e"
 
-# ── Sound ─────────────────────────────────────────────────────────────────────
+# Sound
 def play_alert():
     def _beep():
         try:
@@ -106,7 +106,7 @@ def play_alert():
             pass
     threading.Thread(target=_beep, daemon=True).start()
 
-# ── Utilities ─────────────────────────────────────────────────────────────────
+# Utilities 
 def cv2_frame_to_ctk(frame, width, height):
     """
     Converts OpenCV frame to CustomTkinter image.
@@ -122,7 +122,7 @@ def cv2_frame_to_ctk(frame, width, height):
     return ctk.CTkImage(light_image=pil_img, dark_image=pil_img, size=(width, height))
 
 
-# ── Main Application ──────────────────────────────────────────────────────────
+# main Application 
 class PCBInspectionHMI(ctk.CTk):
 
     PANEL_W = 640
@@ -135,7 +135,7 @@ class PCBInspectionHMI(ctk.CTk):
         self.resizable(True, True)
         self.configure(fg_color="#0d0d12")
 
-        # ── State ─────────────────────────────────────────────────────────────
+        # State
         self.camera_running  = False
         self.auto_mode       = False
         self.frozen_frame    = None
@@ -153,14 +153,13 @@ class PCBInspectionHMI(ctk.CTk):
         # Full log for export
         self.full_log = []   # list of dicts
 
-        # ── Inspection gating ─────────────────────────────────────────────
+        # Inspection gating
         self.INSPECTION_COOLDOWN   = 3.0
         self._last_inspection_time = 0
         self._inspection_locked    = False
 
-        # ── Sensor gate ───────────────────────────────────────────────────
+        # Sensor gate
         # AI only inspects when Arduino sends "PCB_DETECTED".
-        # pcb_present = False means camera is idle (no PCB under lens).
         self.pcb_present = False
 
         # ESP32 serial
@@ -170,7 +169,7 @@ class PCBInspectionHMI(ctk.CTk):
         self.model = None
         self._load_model()
 
-        # ── Build UI ──────────────────────────────────────────────────────────
+        # ── Build UI 
         self._build_header()
         self._build_video_panels()
         self._build_status_bar()

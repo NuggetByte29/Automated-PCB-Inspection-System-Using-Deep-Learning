@@ -64,13 +64,12 @@ The system uses a USB webcam mounted above a DC motor conveyor belt. When a PCB 
 ```
 fyp_project/
 │
-├── pcb_hmi.py    # Main HMI application
+├── pcb_hmi.py                # Main HMI application
 ├── run_pcb_dashboard.py      # old hmi
 ├── train_val_split.py        # Dataset split utility
 ├── data.yaml                 # YOLO dataset config
 │
 ├── data/                     # Dataset images (excluded from repo)
-├── my_dataset/               # Raw dataset (excluded from repo)
 ├── runs/                     # YOLO training outputs (excluded from repo)
 └── *.pt                      # Model weights (excluded from repo)
 ```
@@ -91,9 +90,8 @@ pip install ultralytics customtkinter pyserial matplotlib reportlab
 ```
 
 ### 3. Download model weights
-Download `yolo11s.pt` separately and place it in the project root.
+Download `best.pt` in run file separately and place it in the project root.
 
-> Model weights are excluded from this repo due to file size.
 
 ### 4. Connect Arduino
 - Flash `pcb_conveyor_uno.ino` to your Arduino Uno
@@ -101,7 +99,7 @@ Download `yolo11s.pt` separately and place it in the project root.
 
 ### 5. Run the HMI
 ```bash
-python run_pcb_dashboard.py
+python pcb_hmi.py
 ```
 
 ---
@@ -127,7 +125,7 @@ python run_pcb_dashboard.py
 
 ---
 
-## 🔁 Serial Communication Protocol
+## Serial Communication Protocol
 
 | Sender | Signal | Meaning |
 |---|---|---|
@@ -144,11 +142,6 @@ python run_pcb_dashboard.py
 ## Author
 
 **ADIB ADLI ALEK BIN CHE ALEK**
+
 B.Eng Electrical-Mechatronics Engineering
 Universiti Teknologi Malaysia (UTM)
-
----
-
-## License
-
-This project is for academic purposes. All rights reserved.
