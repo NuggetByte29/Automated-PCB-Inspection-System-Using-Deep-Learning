@@ -3,8 +3,7 @@
 *.onnx
 
 
-# YOLO Training Runs (very large)
-runs/
+
 
 # Dataset Images (large)
 my_dataset/
