@@ -7,12 +7,13 @@ An AI-powered automated inspection system for detecting surface-mount technology
 ## System Overview
 
 The system uses a USB webcam mounted above a DC motor conveyor belt. When a PCB is detected by an IR proximity sensor, the conveyor stops and the AI model inspects the board in real time. Results are displayed on a custom HMI built with CustomTkinter.
-![System Setup](assets/system_setup.png)
+
+![System Setup](system_setup.png)
 
 ---
 
 ## 🖥️ HMI
-![HMI Screenshot](assets/HMI_output.png)
+![HMI Screenshot](HMI_output.png)
 
 ---
 
