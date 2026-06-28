@@ -48,7 +48,7 @@ except ImportError:
     print("[WARN] reportlab not installed — PDF export disabled")
     print("       Run: pip install reportlab")
 
-# Appearance 
+# Appearance
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
 
@@ -106,23 +106,16 @@ def play_alert():
             pass
     threading.Thread(target=_beep, daemon=True).start()
 
-# Utilities 
+# Utilities
 def cv2_frame_to_ctk(frame, width, height):
-    """
-    Converts OpenCV frame to CustomTkinter image.
-    Uses ImageOps.pad to prevent stretching by maintaining the aspect ratio!
-    """
+    """OpenCV BGR frame -> CTkImage, letterboxed so it doesn't stretch."""
     frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
     pil_img   = Image.fromarray(frame_rgb)
-    
-    # This prevents stretching. It fits the image inside the width/height 
-    # and fills the leftover space with a dark background color.
-    pil_img = ImageOps.pad(pil_img, (width, height), color=(20, 22, 30))
-    
+    pil_img   = ImageOps.pad(pil_img, (width, height), color=(20, 22, 30))
     return ctk.CTkImage(light_image=pil_img, dark_image=pil_img, size=(width, height))
 
 
-# main Application 
+# main Application
 class PCBInspectionHMI(ctk.CTk):
 
     PANEL_W = 640
@@ -169,7 +162,7 @@ class PCBInspectionHMI(ctk.CTk):
         self.model = None
         self._load_model()
 
-        # ── Build UI 
+        # Build UI
         self._build_header()
         self._build_video_panels()
         self._build_status_bar()
@@ -180,7 +173,7 @@ class PCBInspectionHMI(ctk.CTk):
         self._show_placeholder(self.live_label,   "Live Feed")
         self._show_placeholder(self.frozen_label, "Frozen Frame  ·  Defect Snapshot")
 
-    # ── Model ─────────────────────────────────────────────────────────────────
+    # Model
     def _load_model(self):
         if os.path.exists(MODEL_PATH):
             try:
@@ -191,7 +184,7 @@ class PCBInspectionHMI(ctk.CTk):
         else:
             print("[WARN] Model not found — demo mode")
 
-    # ── Header ────────────────────────────────────────────────────────────────
+    # Header
     def _build_header(self):
         hdr = ctk.CTkFrame(self, fg_color="#111118", corner_radius=0, height=60)
         hdr.pack(fill="x", side="top")
@@ -212,7 +205,7 @@ class PCBInspectionHMI(ctk.CTk):
             text=datetime.now().strftime("%Y-%m-%d  %H:%M:%S"))
         self.after(1000, self._tick_clock)
 
-    # ── Video panels ──────────────────────────────────────────────────────────
+    # video panels
     def _build_video_panels(self):
         pf = ctk.CTkFrame(self, fg_color="#0d0d12")
         pf.pack(fill="x", padx=16, pady=(8, 0), expand=True)
@@ -232,7 +225,7 @@ class PCBInspectionHMI(ctk.CTk):
             lbl.pack(padx=8, pady=(0, 8))
             setattr(self, attr, lbl)
 
-    # ── Status bar ────────────────────────────────────────────────────────────
+    # Status bar
     def _build_status_bar(self):
         self.status_frame = ctk.CTkFrame(self, corner_radius=10,
                                           height=52, fg_color="#112200")
@@ -246,7 +239,7 @@ class PCBInspectionHMI(ctk.CTk):
         )
         self.status_label.pack(expand=True)
 
-    # ── Controls ──────────────────────────────────────────────────────────────
+    # Controls
     def _build_controls(self):
         ctrl = ctk.CTkFrame(self, fg_color="#0d0d12")
         ctrl.pack(fill="x", padx=16, pady=(10, 0))
@@ -269,7 +262,7 @@ class PCBInspectionHMI(ctk.CTk):
             if "Auto" in label:
                 self.auto_btn = btn
 
-    # ── Stat cards ────────────────────────────────────────────────────────────
+    # Stat cards
     def _build_stat_cards(self):
         cf = ctk.CTkFrame(self, fg_color="#0d0d12")
         cf.pack(fill="x", padx=16, pady=(10, 0))
@@ -293,15 +286,15 @@ class PCBInspectionHMI(ctk.CTk):
             lbl.pack()
             setattr(self, attr, lbl)
 
-    # ── Bottom section ────────────────────────────────────────────────────────
+    # Bottom section
     def _build_bottom_section(self):
         bottom = ctk.CTkFrame(self, fg_color="#0d0d12")
         bottom.pack(fill="both", padx=16, pady=(10, 12), expand=True)
 
-        self._build_log_table(bottom)   # left
+        self._build_log_table(bottom)   # for left
         self._build_right_panel(bottom) # right: chart + ESP32
 
-    # ── Log table ─────────────────────────────────────────────────────────────
+    # Log table
     def _build_log_table(self, parent):
         outer = ctk.CTkFrame(parent, fg_color="#13131e", corner_radius=12,
                               border_width=1, border_color="#1e2a3a")
@@ -353,7 +346,7 @@ class PCBInspectionHMI(ctk.CTk):
                        padx=(12, 0), pady=(0, 10))
         sb.pack(side="right", fill="y", padx=(0, 8), pady=(0, 10))
 
-    # ── Right panel: chart LEFT, ESP32 RIGHT (side by side) ──────────────────
+    # Right panel: chart left , ESP32 right
     def _build_right_panel(self, parent):
         right = ctk.CTkFrame(parent, fg_color="#0d0d12", width=780)
         right.pack(side="left", fill="both", padx=(6, 0))
@@ -362,7 +355,7 @@ class PCBInspectionHMI(ctk.CTk):
         self._build_chart(right)
         self._build_esp32_panel(right)
 
-    # ── Chart ─────────────────────────────────────────────────────────────────
+    # Chart
     def _build_chart(self, parent):
         outer = ctk.CTkFrame(parent, fg_color="#13131e", corner_radius=12,
                               border_width=1, border_color="#1e2a3a", width=370)
@@ -406,7 +399,7 @@ class PCBInspectionHMI(ctk.CTk):
         self.reject_val.configure(text="0")
         self.fps_val.configure(text="0")
 
-        # Clear log table
+        # clear log table
         for item in self.tree.get_children():
             self.tree.delete(item)
         self.log_count_label.configure(text="0 entries")
@@ -447,7 +440,7 @@ class PCBInspectionHMI(ctk.CTk):
         self.fig.tight_layout(rect=[0, 0.02, 1, 1])
         self.canvas.draw()
 
-    # ── ESP32 panel ───────────────────────────────────────────────────────────
+    # ESP 32 panel
     def _build_esp32_panel(self, parent):
         outer = ctk.CTkFrame(parent, fg_color="#13131e", corner_radius=12,
                               border_width=1, border_color="#1e2a3a", width=370)
@@ -481,7 +474,7 @@ class PCBInspectionHMI(ctk.CTk):
                      font=ctk.CTkFont(size=12),
                      text_color="#667788").pack(side="left")
 
-        # Dropdown of available serial ports
+        # Dropdown for serial ports
         ports = self._get_serial_ports()
         self.port_var = tk.StringVar(value=ports[0] if ports else "No ports found")
         self.port_menu = ctk.CTkOptionMenu(
@@ -500,7 +493,7 @@ class PCBInspectionHMI(ctk.CTk):
             corner_radius=6, command=self._refresh_ports
         ).pack(side="left", padx=(6, 0))
 
-        # Connect status indicator
+        # connect status Indicator
         self.esp_status_dot = ctk.CTkLabel(
             port_row, text="●", font=ctk.CTkFont(size=16),
             text_color="#443333"
@@ -538,7 +531,7 @@ class PCBInspectionHMI(ctk.CTk):
             corner_radius=6, command=lambda: self._send_serial("STOP\n")
         ).pack(side="left")
 
-    # ── Serial helpers ────────────────────────────────────────────────────────
+    # Serial helpers
     def _get_serial_ports(self):
         if not SERIAL_OK:
             return ["pyserial not installed"]
@@ -602,7 +595,7 @@ class PCBInspectionHMI(ctk.CTk):
         self.INSPECTION_COOLDOWN = round(value, 1)
         self.cooldown_label.configure(text=f"{self.INSPECTION_COOLDOWN:.1f}s")
 
-    # ── Report saving (NEW in Step 4) ─────────────────────────────────────────
+    # Report saving
     def save_report(self):
         """Show a dialog to choose CSV or PDF."""
         dialog = ctk.CTkToplevel(self)
@@ -641,7 +634,6 @@ class PCBInspectionHMI(ctk.CTk):
                       corner_radius=6,
                       command=dialog.destroy).pack(pady=(12, 0))
 
-    # ── CSV export ────────────────────────────────────────────────────────────
     def _save_csv(self):
         ts  = datetime.now().strftime("%Y%m%d_%H%M%S")
         path = filedialog.asksaveasfilename(
@@ -681,7 +673,7 @@ class PCBInspectionHMI(ctk.CTk):
         except Exception as e:
             messagebox.showerror("Save Error", str(e))
 
-    # ── PDF export ────────────────────────────────────────────────────────────
+    # PDF export
     def _save_pdf(self):
         if not PDF_OK:
             messagebox.showerror("Error",
@@ -715,7 +707,6 @@ class PCBInspectionHMI(ctk.CTk):
             styles = getSampleStyleSheet()
             story  = []
 
-            # ── Title ──────────────────────────────────────────────────────
             title_style = ParagraphStyle("title",
                                           fontSize=18, leading=22,
                                           alignment=TA_CENTER,
@@ -737,7 +728,7 @@ class PCBInspectionHMI(ctk.CTk):
                                      color=colors.HexColor("#ccddee")))
             story.append(Spacer(1, 10))
 
-            # ── Summary table ──────────────────────────────────────────────
+            # Summary table
             total = self.total_pass + self.total_reject
             pass_pct   = round(self.total_pass   / total * 100) if total else 0
             reject_pct = round(self.total_reject / total * 100) if total else 0
@@ -773,7 +764,7 @@ class PCBInspectionHMI(ctk.CTk):
             story.append(t)
             story.append(Spacer(1, 14))
 
-            # ── Defect class counts ────────────────────────────────────────
+            # Defect class counts
             story.append(Paragraph("Defect Class Breakdown",
                                    ParagraphStyle("h2", fontSize=13,
                                                   fontName="Helvetica-Bold",
@@ -801,7 +792,7 @@ class PCBInspectionHMI(ctk.CTk):
             story.append(ct)
             story.append(Spacer(1, 14))
 
-            # ── Chart image ────────────────────────────────────────────────
+            # Chart image
             story.append(Paragraph("Defect Statistics Chart",
                                    ParagraphStyle("h2", fontSize=13,
                                                   fontName="Helvetica-Bold",
@@ -810,9 +801,9 @@ class PCBInspectionHMI(ctk.CTk):
             story.append(RLImage(chart_path, width=12*cm, height=8*cm))
             story.append(Spacer(1, 14))
 
-            # ── Defect snapshot ────────────────────────────────────────────
+            # Defect snapshot
             if snap_path:
-                # Calculate correct aspect ratio from actual image
+                # aspect ratio from actual image
                 import PIL.Image as PILImage
                 with PILImage.open(snap_path) as im:
                     iw, ih = im.size
@@ -828,7 +819,7 @@ class PCBInspectionHMI(ctk.CTk):
                 story.append(KeepTogether([snap_title, snap_img]))
                 story.append(Spacer(1, 14))
 
-            # ── Inspection log table ───────────────────────────────────────
+            # Inspection log table
             if self.full_log:
                 story.append(Paragraph("Inspection Log",
                                        ParagraphStyle("h2", fontSize=13,
@@ -874,7 +865,7 @@ class PCBInspectionHMI(ctk.CTk):
         except Exception as e:
             messagebox.showerror("PDF Error", str(e))
 
-    # ── Log helpers ───────────────────────────────────────────────────────────
+    # Log helpers
     def _append_log(self, detections):
         ts = datetime.now().strftime("%H:%M:%S")
         if not detections:
@@ -909,7 +900,7 @@ class PCBInspectionHMI(ctk.CTk):
         self.full_log.clear()
         self.log_count_label.configure(text="0 entries")
 
-    # ── Placeholder ───────────────────────────────────────────────────────────
+    # Placeholder
     def _show_placeholder(self, label, caption=""):
         import PIL.ImageDraw
         blank = Image.new("RGB", (self.PANEL_W, self.PANEL_H), (20, 22, 30))
@@ -922,7 +913,7 @@ class PCBInspectionHMI(ctk.CTk):
         label.configure(image=ctk_img, text="")
         label._image = ctk_img
 
-    # ── Camera ────────────────────────────────────────────────────────────────
+    # Camera
     def start_camera(self):
         if self.camera_running:
             return
@@ -970,7 +961,7 @@ class PCBInspectionHMI(ctk.CTk):
                 break
             frame = cv2.rotate(frame, cv2.ROTATE_90_COUNTERCLOCKWISE)
 
-            # ── AI active only when pcb_present=True ─────────────────────
+            # AI active only when pcb_present=True
             if not self.pcb_present:
                 # No PCB — show plain live feed
                 live_img = cv2_frame_to_ctk(frame, self.PANEL_W, self.PANEL_H)
@@ -1137,7 +1128,7 @@ class PCBInspectionHMI(ctk.CTk):
         self.status_frame.configure(fg_color=bg)
         self.status_label.configure(text=text, text_color=color)
 
-    # ── Close ─────────────────────────────────────────────────────────────────
+    # Close
     def on_closing(self):
         self.camera_running = False
         if self.cap:

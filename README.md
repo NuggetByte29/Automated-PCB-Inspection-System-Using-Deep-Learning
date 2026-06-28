@@ -40,7 +40,7 @@ The system uses a USB webcam mounted above a DC motor conveyor belt. When a PCB 
 | Recall | 91.4% |
 | Inference Speed | 11.6ms |
 | Training Epochs | 60 |
-| Dataset Size | 160 custom-annotated images |
+| Dataset Size | 200 custom-annotated images |
 
 ---
 
@@ -82,8 +82,8 @@ fyp_project/
 ├── data.yaml                 # YOLO dataset config
 │
 ├── data/                     # Dataset images (excluded from repo)
-├── runs/                     # YOLO training outputs (excluded from repo)
-└── *.pt                      # Model weights (excluded from repo)
+├── runs/                     # YOLO training outputs
+└── *.pt                      # Model weights
 ```
 
 ---
